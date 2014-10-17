@@ -51,6 +51,36 @@ TEST(Ribbon, max_pieces_5){
    ASSERT_EQ(5, result);   
 }
 
+TEST(Ribbon, max_pieces2){
+   int cuts[] = {5, 3, 2};
+   int result = max_pieces(5, cuts, 3);
+   ASSERT_EQ(2, result);   
+}
+
+TEST(Ribbon, max_pieces2_2){
+   int cuts[] = {5, 5, 2};
+   int result = max_pieces(7, cuts, 3);
+   ASSERT_EQ(2, result);   
+}
+
+TEST(Ribbon, max_pieces2_3){
+   int cuts[] = {5, 5, 2};
+   int result = max_pieces(5, cuts, 3);
+   ASSERT_EQ(1, result);   
+}
+
+TEST(Ribbon, max_pieces2_4){
+   int cuts[] = {5, 5, 2};
+   int result = max_pieces(4000, cuts, 3);
+   ASSERT_EQ(2000, result);   
+}
+
+TEST(Ribbon, max_pieces2_5){
+   int cuts[] = {5, 1, 2};
+   int result = max_pieces(5, cuts, 3);
+   ASSERT_EQ(5, result);   
+}
+
 TEST(Ribbon, cut_ribbon_solve){
    std::stringstream r("5 5 3 2\n7 5 5 2");
    std::stringstream w;

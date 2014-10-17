@@ -1,9 +1,6 @@
 #include <iostream>
-#include <vector>
-#include <stack>
 #include <algorithm>
 #include <climits>
-#include <utility>
 #include <cstring>
 
 #include "prints.h"
@@ -24,34 +21,41 @@ int max_pieces_recursion(int length, int a, int b, int c){
    }
 }
 
-int max_pieces(int length, int a, int b, int c){
+inline int max_pieces(int length, int a, int b, int c){
    int groups[4001];
    memset(groups, -1, sizeof(groups));
    groups[0] = 0;
+
    for(int i = 0; i <= length; ++i){
-      int groups_a = ((i -a)>=0) ? groups[i-a] : -1; 
-      int groups_b = ((i -b)>=0) ? groups[i-b] : -1; 
-      int groups_c = ((i -c)>=0) ? groups[i-c] : -1;
+      int groups_a = ((i - a) >= 0) ? groups[i-a] : -1; 
+      int groups_b = ((i - b) >= 0) ? groups[i-b] : -1; 
+      int groups_c = ((i - c) >= 0) ? groups[i-c] : -1;
 
       groups[i] = groups_a != -1 ? std::max(groups[i], groups_a+1) : groups[i];
       groups[i] = groups_b != -1 ? std::max(groups[i], groups_b+1) : groups[i];
       groups[i] = groups_c != -1 ? std::max(groups[i], groups_c+1) : groups[i];
-      //ArrayToStream(std::cout, groups, 6);
-      //std::cout << std::endl;
    }
    return groups[length];
 }
 
-void quick_swap(int& a, int& b){
-   a ^= b;
-   b ^= a;
-   a ^= b;
+int max_pieces(int length, int cuts[], int size){
+   int groups[4001];
+   memset(groups, -1, sizeof(groups));
+   groups[0] = 0;
+
+   for(int i = 0; i <= length; ++i){
+      for(int j = 0; j < size; ++j){
+         int groups_j = ((i - cuts[j])>=0) ? groups[i-cuts[j]] : -1;
+         groups[i] = groups_j != -1 ? std::max(groups[i], groups_j+1) : groups[i];
+      }
+   }
+   return groups[length];
 }
 
 void cut_ribbon_solve(std::istream& in, std::ostream& out){
    int n, a, b, c;
    while(in >> n >> a >> b >> c){
-      int result = max_pieces_recursion(n, a, b, c);
+      int result = max_pieces(n, a, b, c);
       out << result << std::endl;
    }
 }

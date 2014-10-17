@@ -9,5 +9,5 @@ void cut_ribbon_solve(std::istream& in, std::ostream& out);
 
 int max_pieces_recursion(int length, int a, int b, int c);
 int max_pieces(int length, int a, int b, int c);
-void quick_swap(int& a, int& b);
+int max_pieces(int length, int cuts[], int size);
 #endif
