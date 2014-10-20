@@ -21,7 +21,26 @@ int max_pieces_recursion(int length, int a, int b, int c){
    }
 }
 
-inline int max_pieces(int length, int a, int b, int c){
+int max_pieces2(int length, int a, int b, int c){
+   int groups[4001];
+   memset(groups, -1, sizeof(groups));
+   groups[0] = 0;
+
+   int cuts[] = {a, b, c};
+   std::sort(cuts, cuts+3);
+
+   for(int i = 0; i < 3; ++i){
+      for(int j = 0; j <= length; ++j){
+         int groups_i = ((j - cuts[i]) >= 0) ? groups[j - cuts[i]] : -1;
+         groups[j] = groups_i != -1 ? std::max(groups[j], groups_i+1) : groups[j];
+      }
+      if(groups[length] != -1)
+         break;
+   }
+   return groups[length];
+}
+
+int max_pieces(int length, int a, int b, int c){
    int groups[4001];
    memset(groups, -1, sizeof(groups));
    groups[0] = 0;
@@ -45,7 +64,7 @@ int max_pieces(int length, int cuts[], int size){
 
    for(int i = 0; i <= length; ++i){
       for(int j = 0; j < size; ++j){
-         int groups_j = ((i - cuts[j])>=0) ? groups[i-cuts[j]] : -1;
+         int groups_j = ((i - cuts[j]) >= 0) ? groups[i - cuts[j]] : -1;
          groups[i] = groups_j != -1 ? std::max(groups[i], groups_j+1) : groups[i];
       }
    }
@@ -53,6 +72,9 @@ int max_pieces(int length, int cuts[], int size){
 }
 
 void cut_ribbon_solve(std::istream& in, std::ostream& out){
+   // turn off synchronization with C I/O
+   std::ios_base::sync_with_stdio(false);
+
    int n, a, b, c;
    while(in >> n >> a >> b >> c){
       int result = max_pieces(n, a, b, c);
