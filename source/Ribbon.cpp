@@ -21,13 +21,20 @@ int max_pieces_recursion(int length, int a, int b, int c){
    }
 }
 
-int max_pieces2(int length, int a, int b, int c){
+int max_pieces(int length, int a, int b, int c){
    int groups[4001];
    memset(groups, -1, sizeof(groups));
    groups[0] = 0;
+   ArrayToStream(std::cout, groups, length);
+   std::cout << std::endl;
 
    int cuts[] = {a, b, c};
    std::sort(cuts, cuts+3);
+   ArrayToStream(std::cout, cuts, 3);
+   std::cout << std::endl;
+   
+   if(length % cuts[0] == 0)
+      return length/cuts[0];
 
    for(int i = 0; i < 3; ++i){
       for(int j = 0; j <= length; ++j){
@@ -36,11 +43,13 @@ int max_pieces2(int length, int a, int b, int c){
       }
       if(groups[length] != -1)
          break;
+      ArrayToStream(std::cout, groups, length);
+      std::cout << std::endl;
    }
    return groups[length];
 }
 
-int max_pieces(int length, int a, int b, int c){
+int max_pieces3(int length, int a, int b, int c){
    int groups[4001];
    memset(groups, -1, sizeof(groups));
    groups[0] = 0;
@@ -53,6 +62,26 @@ int max_pieces(int length, int a, int b, int c){
       groups[i] = groups_a != -1 ? std::max(groups[i], groups_a+1) : groups[i];
       groups[i] = groups_b != -1 ? std::max(groups[i], groups_b+1) : groups[i];
       groups[i] = groups_c != -1 ? std::max(groups[i], groups_c+1) : groups[i];
+   }
+   return groups[length];
+}
+
+int max_pieces2(int length, int a, int b, int c){
+   int groups[4001];
+   memset(groups, -1, sizeof(groups));
+   groups[0] = 0;
+
+   int cuts[] = {a, b, c};
+   std::sort(cuts, cuts+3);
+
+   if(length % cuts[0] == 0)
+      return length/cuts[0];
+
+   for(int i = 0; i <= length; ++i){
+      for(int j = 0; j < 3; ++j){
+         int groups_j = ((i - cuts[j]) >= 0) ? groups[i - cuts[j]] : -1;
+         groups[i] = groups_j != -1 ? std::max(groups[i], groups_j+1) : groups[i];
+      }
    }
    return groups[length];
 }
@@ -73,7 +102,7 @@ int max_pieces(int length, int cuts[], int size){
 
 void cut_ribbon_solve(std::istream& in, std::ostream& out){
    // turn off synchronization with C I/O
-   std::ios_base::sync_with_stdio(false);
+   //std::ios_base::sync_with_stdio(false);
 
    int n, a, b, c;
    while(in >> n >> a >> b >> c){
