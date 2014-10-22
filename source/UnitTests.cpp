@@ -85,14 +85,14 @@ TEST(Ribbon, cut_ribbon_solve){
    std::stringstream r("5 5 3 2\n7 5 5 2");
    std::stringstream w;
    cut_ribbon_solve(r, w);
-   ASSERT_EQ(w.str(), "2\n2\n");   
+   ASSERT_EQ("2\n2\n", w.str());   
 }
 
 TEST(Ribbon, cut_ribbon_solve_2){
    std::stringstream r("16 10 8 3");
    std::stringstream w;
    cut_ribbon_solve(r, w);
-   ASSERT_EQ(w.str(), "3\n");   
+   ASSERT_EQ("3\n", w.str());   
 }
 
 
@@ -100,5 +100,12 @@ TEST(Ribbon, cut_ribbon_solve_3){
    std::stringstream r("3328 44 92 148\n3336 651 18 268");
    std::stringstream w;
    cut_ribbon_solve(r, w);
-   ASSERT_EQ(w.str(), "70\n115\n");   
+   ASSERT_EQ("70\n115\n", w.str());   
+}
+
+TEST(Ribbon, cut_ribbon_solve_4){
+   std::stringstream r("490 4 49 50\n100 3 17 22");
+   std::stringstream w;
+   cut_ribbon_solve(r, w);
+   ASSERT_EQ("111\n27\n", w.str());   
 }

@@ -21,8 +21,8 @@ int max_pieces_recursion(int length, int a, int b, int c){
    }
 }
 
-int max_pieces(int length, int a, int b, int c){
-   int groups[4001];
+inline int max_pieces(int length, int a, int b, int c){
+   register int groups[4001];
    memset(groups, -1, sizeof(groups));
    groups[0] = 0;
    // ArrayToStream(std::cout, groups, length);
@@ -36,11 +36,14 @@ int max_pieces(int length, int a, int b, int c){
    if(length % cuts[0] == 0)
       return length/cuts[0];
 
+   int groups_i;
    for(int i = 0; i < 3; ++i){
-      for(int j = 0; j <= length; ++j){
-         int groups_i = ((j - cuts[i]) >= 0) ? groups[j - cuts[i]] : -1;
+      for(int j = cuts[i]; j <= length; ++j){
+         groups_i = ((j - cuts[i]) >= 0) ? groups[j - cuts[i]] : -1;
          groups[j] = groups_i != -1 ? std::max(groups[j], groups_i+1) : groups[j];
       }
+      if(groups[length] != -1)
+         break;
    }
    // ArrayToStream(std::cout, groups, length+1);
    // std::cout << std::endl;
